@@ -1,0 +1,52 @@
+city,city_ascii,lat,lng,country,iso2,iso3,admin_name,capital,population,id
+Moscow,Moscow,55.7558,37.6172,Russia,RU,RUS,Moskva,primary,17332000.0,1643318494
+London,London,51.5072,-0.1275,United Kingdom,GB,GBR,"London, City of",primary,11262000.0,1826645935
+Paris,Paris,48.8567,2.3522,France,FR,FRA,Île-de-France,primary,11060000.0,1250015082
+Madrid,Madrid,40.4169,-3.7033,Spain,ES,ESP,Madrid,primary,6211000.0,1724616994
+Berlin,Berlin,52.52,13.405,Germany,DE,DEU,Berlin,primary,4890363.0,1276451290
+Athens,Athens,37.9842,23.7281,Greece,GR,GRC,Attikí,primary,3059764.0,1300715560
+Budapest,Budapest,47.4925,19.0514,Hungary,HU,HUN,Budapest,primary,2997958.0,1348611435
+Kyiv,Kyiv,50.45,30.5233,Ukraine,UA,UKR,"Kyiv, Misto",primary,2952301.0,1804382913
+Rome,Rome,41.8933,12.4828,Italy,IT,ITA,Lazio,primary,2748109.0,1380382862
+Bucharest,Bucharest,44.4325,26.1039,Romania,RO,ROU,Bucureşti,primary,2412530.0,1642414442
+Vienna,Vienna,48.2083,16.3725,Austria,AT,AUT,Wien,primary,2223236.0,1040261752
+Stockholm,Stockholm,59.3294,18.0686,Sweden,SE,SWE,Stockholm,primary,2121000.0,1752425602
+Minsk,Minsk,53.9,27.5667,Belarus,BY,BLR,Minsk,primary,1995471.0,1112348503
+Warsaw,Warsaw,52.23,21.0111,Poland,PL,POL,Mazowieckie,primary,1860281.0,1616024847
+Sofia,Sofia,42.7,23.33,Bulgaria,BG,BGR,Sofia-Grad,primary,1547779.0,1100762037
+Amsterdam,Amsterdam,52.3728,4.8936,Netherlands,NL,NLD,Noord-Holland,primary,1459402.0,1528355309
+Copenhagen,Copenhagen,55.6761,12.5683,Denmark,DK,DNK,Hovedstaden,primary,1366301.0,1208763942
+Helsinki,Helsinki,60.1708,24.9375,Finland,FI,FIN,Uusimaa,primary,1360075.0,1246177997
+Prague,Prague,50.0875,14.4214,Czechia,CZ,CZE,Praha,primary,1357326.0,1203744823
+Dublin,Dublin,53.35,-6.2603,Ireland,IE,IRL,Dublin,primary,1263219.0,1372595407
+Brussels,Brussels,50.8467,4.3525,Belgium,BE,BEL,Brussels-Capital Region,primary,1235192.0,1056469830
+Belgrade,Belgrade,44.82,20.46,Serbia,RS,SRB,Beograd,primary,1197714.0,1688374696
+Oslo,Oslo,59.9133,10.7389,Norway,NO,NOR,Oslo,primary,1064235.0,1578324706
+Riga,Riga,56.9489,24.1064,Latvia,LV,LVA,Rīga,primary,920643.0,1428586192
+Zagreb,Zagreb,45.8131,15.9775,Croatia,HR,HRV,"Zagreb, Grad",primary,767131.0,1191233290
+Vilnius,Vilnius,54.6872,25.28,Lithuania,LT,LTU,Vilniaus Miestas,primary,716856.0,1440887149
+Chisinau,Chisinau,47.0228,28.8353,Moldova,MD,MDA,Chişinău,primary,702300.0,1498011437
+Tallinn,Tallinn,59.4372,24.7453,Estonia,EE,EST,Tallinn,primary,614561.0,1233260021
+Lisbon,Lisbon,38.7253,-9.15,Portugal,PT,PRT,Lisboa,primary,548703.0,1620619017
+The Hague,The Hague,52.08,4.31,Netherlands,NL,NLD,Zuid-Holland,primary,548320.0,1528799905
+Skopje,Skopje,41.9961,21.4317,North Macedonia,MK,MKD,Skopje,primary,526502.0,1807600615
+Valletta,Valletta,35.8983,14.5125,Malta,MT,MLT,Valletta,primary,480134.0,1470574399
+Bratislava,Bratislava,48.1439,17.1097,Slovakia,SK,SVK,Bratislava,primary,475503.0,1703195001
+Sarajevo,Sarajevo,43.8564,18.4131,Bosnia and Herzegovina,BA,BIH,"Bosnia and Herzegovina, Federation of",primary,419957.0,1070966777
+Tirana,Tirana,41.3289,19.8178,Albania,AL,ALB,Tiranë,primary,418495.0,1008162156
+Nicosia,Nicosia,35.1725,33.365,Cyprus,CY,CYP,Lefkosía,primary,330000.0,1196944155
+Ljubljana,Ljubljana,46.0514,14.5061,Slovenia,SI,SVN,Ljubljana,primary,284293.0,1705917455
+Podgorica,Podgorica,42.4414,19.2628,Montenegro,ME,MNE,Podgorica,primary,173024.0,1499454516
+Reykjavík,Reykjavik,64.1467,-21.94,Iceland,IS,ISL,Reykjavík,primary,139875.0,1352327190
+Bern,Bern,46.9481,7.4475,Switzerland,CH,CHE,Bern,primary,134506.0,1756374318
+Luxembourg,Luxembourg,49.6117,6.1319,Luxembourg,LU,LUX,Luxembourg,primary,132780.0,1442262731
+Monaco,Monaco,43.7333,7.4167,Monaco,MC,MCO,,primary,36371.0,1492854256
+Gibraltar,Gibraltar,36.14,-5.35,Gibraltar,GI,GIB,,primary,34003.0,1292385245
+Saint Helier,Saint Helier,49.1858,-2.11,Jersey,JE,JEY,,primary,33522.0,1832490253
+Douglas,Douglas,54.15,-4.4775,Isle of Man,IM,IMN,,primary,27938.0,1833688345
+Andorra la Vella,Andorra la Vella,42.5,1.5,Andorra,AD,AND,Andorra la Vella,primary,22615.0,1020828846
+Saint Peter Port,Saint Peter Port,49.4555,-2.5368,Guernsey,GG,GGY,,primary,18958.0,1831991870
+Tórshavn,Torshavn,62.0,-6.7833,Faroe Islands,FO,FRO,Tórshavn,primary,13326.0,1234904517
+Vaduz,Vaduz,47.141,9.521,Liechtenstein,LI,LIE,Vaduz,primary,5696.0,1438317747
+San Marino,San Marino,43.9346,12.4473,San Marino,SM,SMR,San Marino Città,primary,4040.0,1674741947
+Vatican City,Vatican City,41.904,12.453,Vatican City,VA,VAT,,primary,825.0,1336000000
