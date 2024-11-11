@@ -1,0 +1,64 @@
+city,city_ascii,lat,lng,country,iso2,iso3,admin_name,capital,population,id
+Ho Chi Minh City,Ho Chi Minh City,10.7756,106.7019,Vietnam,VN,VNM,Hồ Chí Minh,admin,15136000.0,1704774326
+Hanoi,Hanoi,21.0,105.85,Vietnam,VN,VNM,Hà Nội,primary,8246600.0,1704413791
+Haiphong,Haiphong,20.8651,106.6838,Vietnam,VN,VNM,Hải Phòng,admin,2103500.0,1704000623
+Cần Thơ,Can Tho,10.0333,105.7833,Vietnam,VN,VNM,Cần Thơ,admin,1237300.0,1704783472
+Biên Hòa,Bien Hoa,10.95,106.8167,Vietnam,VN,VNM,Đồng Nai,admin,1104000.0,1704863046
+Huế,Hue,16.4667,107.5792,Vietnam,VN,VNM,Thừa Thiên-Huế,admin,652572.0,1704016023
+Bắc Ninh,Bac Ninh,21.1833,106.05,Vietnam,VN,VNM,Bắc Ninh,admin,520000.0,1704025181
+Hải Dương,Hai Duong,20.9397,106.3306,Vietnam,VN,VNM,Hải Dương,admin,507469.0,1704909566
+Vinh,Vinh,18.6667,105.6667,Vietnam,VN,VNM,Nghệ An,admin,490000.0,1704960059
+Đà Lạt,Da Lat,11.9417,108.4383,Vietnam,VN,VNM,Lâm Đồng,admin,406105.0,1704933464
+Thanh Hóa,Thanh Hoa,19.8075,105.7764,Vietnam,VN,VNM,Thanh Hóa,admin,393294.0,1704016079
+Nha Trang,Nha Trang,12.245,109.1917,Vietnam,VN,VNM,Khánh Hòa,admin,392279.0,1704497901
+Nam Định,Nam Dinh,20.42,106.1683,Vietnam,VN,VNM,Nam Định,admin,352108.0,1704906277
+Vũng Tàu,Vung Tau,10.3833,107.1167,Vietnam,VN,VNM,Bà Rịa-Vũng Tàu,admin,341552.0,1704581438
+Buôn Ma Thuột,Buon Ma Thuot,12.6667,108.05,Vietnam,VN,VNM,Đắk Lắk,admin,340000.0,1704542086
+Thái Nguyên,Thai Nguyen,21.6,105.85,Vietnam,VN,VNM,Thái Nguyên,admin,330000.0,1704613715
+Thủ Dầu Một,Thu Dau Mot,10.9667,106.65,Vietnam,VN,VNM,Bình Dương,admin,321607.0,1704890399
+Cà Mau,Ca Mau,9.1833,105.15,Vietnam,VN,VNM,Cà Mau,admin,315270.0,1704320474
+Quy Nhơn,Quy Nhon,13.7667,109.2333,Vietnam,VN,VNM,Bình Định,admin,311000.0,1704056461
+Long Xuyên,Long Xuyen,10.3736,105.4458,Vietnam,VN,VNM,An Giang,admin,278658.0,1704453892
+Việt Trì,Viet Tri,21.3,105.4333,Vietnam,VN,VNM,Phú Thọ,admin,277539.0,1704332956
+Mỹ Tho,My Tho,10.35,106.35,Vietnam,VN,VNM,Tiền Giang,admin,270700.0,1704000376
+Thái Bình,Thai Binh,20.4461,106.3422,Vietnam,VN,VNM,Thái Bình,admin,268167.0,1704716027
+Quảng Ngãi,Quang Ngai,15.1167,108.8,Vietnam,VN,VNM,Quảng Ngãi,admin,260252.0,1704029499
+Rạch Giá,Rach Gia,10.0167,105.0833,Vietnam,VN,VNM,Kiến Giang,admin,250660.0,1704872008
+Tuy Hòa,Tuy Hoa,13.0819,109.295,Vietnam,VN,VNM,Phú Yên,admin,242840.0,1704697424
+Sóc Trăng,Soc Trang,9.6028,105.9736,Vietnam,VN,VNM,Sóc Trăng,admin,221430.0,1704758756
+Tân An,Tan An,10.5333,106.4167,Vietnam,VN,VNM,Long An,admin,215250.0,1704199290
+Cao Lãnh,Cao Lanh,10.4672,105.6303,Vietnam,VN,VNM,Đồng Tháp,admin,211912.0,1704276832
+Phan Thiết,Phan Thiet,10.9333,108.1,Vietnam,VN,VNM,Bình Thuận,admin,205333.0,1704221456
+Hà Tĩnh,Ha Tinh,18.3333,105.9,Vietnam,VN,VNM,Hà Tĩnh,admin,202062.0,1704544061
+Vĩnh Long,Vinh Long,10.25,105.9667,Vietnam,VN,VNM,Vĩnh Long,admin,200120.0,1704262419
+Lạng Sơn,Lang Son,21.8478,106.7578,Vietnam,VN,VNM,Lạng Sơn,admin,200108.0,1704004349
+Bắc Giang,Bac Giang,21.2667,106.2,Vietnam,VN,VNM,Bắc Giang,admin,174229.0,1704256754
+Hạ Long,Ha Long,20.95,107.0667,Vietnam,VN,VNM,Quảng Ninh,admin,172915.0,1704379547
+Phan Rang-Tháp Chàm,Phan Rang-Thap Cham,11.5667,108.9833,Vietnam,VN,VNM,Ninh Thuận,admin,167394.0,1704094609
+Đồng Hới,Dong Hoi,17.4831,106.5997,Vietnam,VN,VNM,Quảng Bình,admin,160325.0,1704323043
+Trà Vinh,Tra Vinh,9.9333,106.35,Vietnam,VN,VNM,Trà Vinh,admin,160310.0,1704929966
+Ninh Bình,Ninh Binh,20.2539,105.975,Vietnam,VN,VNM,Ninh Bình,admin,160166.0,1704442748
+Bạc Liêu,Bac Lieu,9.2833,105.7167,Vietnam,VN,VNM,Bạc Liêu,admin,156110.0,1704298745
+Vĩnh Yên,Vinh Yen,21.31,105.5967,Vietnam,VN,VNM,Vĩnh Phúc,admin,152801.0,1704905946
+Đồng Xoài,Dong Xoai,11.5169,106.8392,Vietnam,VN,VNM,Bình Phước,admin,150052.0,1704845487
+Hưng Yên,Hung Yen,20.65,106.0667,Vietnam,VN,VNM,Hưng Yên,admin,147275.0,1704000203
+Pleiku,Pleiku,13.9833,108.0,Vietnam,VN,VNM,Gia Lai,admin,146073.0,1704220080
+Phủ Lý,Phu Ly,20.5411,105.9139,Vietnam,VN,VNM,Hà Nam,admin,136654.0,1704841896
+Tây Ninh,Tay Ninh,11.3678,106.1189,Vietnam,VN,VNM,Tây Ninh,admin,135254.0,1704250951
+Lào Cai,Lao Cai,22.4806,103.975,Vietnam,VN,VNM,Lào Cai,admin,130671.0,1704290986
+Bến Tre,Ben Tre,10.2333,106.3833,Vietnam,VN,VNM,Bến Tre,admin,124449.0,1704108909
+Tam Kỳ,Tam Ky,15.5667,108.4833,Vietnam,VN,VNM,Quảng Nam,admin,122374.0,1704410655
+Hòa Bình,Hoa Binh,20.8133,105.3383,Vietnam,VN,VNM,Hòa Bình,admin,121309.0,1704237072
+Sơn La,Son La,21.327,103.9141,Vietnam,VN,VNM,Sơn La,admin,106052.0,1704957010
+Tuyên Quang,Tuyen Quang,21.8167,105.2167,Vietnam,VN,VNM,Tuyên Quang,admin,104645.0,1704662313
+Yên Bái,Yen Bai,21.7,104.8667,Vietnam,VN,VNM,Yên Bái,admin,100631.0,1704249231
+Vị Thanh,Vi Thanh,9.7833,105.4708,Vietnam,VN,VNM,Hậu Giang,admin,97200.0,1704210026
+Đông Hà,Dong Ha,16.8303,107.0972,Vietnam,VN,VNM,Quảng Trị,admin,93800.0,1704264596
+Cao Bằng,Cao Bang,22.6667,106.2583,Vietnam,VN,VNM,Cao Bằng,admin,73549.0,1704552735
+Điện Biên Phủ,Dien Bien Phu,21.3833,103.0167,Vietnam,VN,VNM,Điện Biên,admin,70000.0,1704081536
+Gia Nghĩa,Gia Nghia,11.9833,107.7,Vietnam,VN,VNM,Đắk Nông,admin,61413.0,1704361005
+Hà Giang,Ha Giang,22.8333,104.9833,Vietnam,VN,VNM,Hà Giang,admin,55559.0,1704495953
+Bắc Kạn,Bac Kan,22.1333,105.8333,Vietnam,VN,VNM,Bắc Kạn,admin,45036.0,1704000217
+Lai Châu,Lai Chau,22.3992,103.4392,Vietnam,VN,VNM,Lai Châu,admin,42973.0,1704983526
+Kon Tum,Kon Tum,14.3544,108.0075,Vietnam,VN,VNM,Kon Tum,admin,,1704988146
+Đà Nẵng,Da Nang,16.0748,108.224,Vietnam,VN,VNM,Đà Nẵng,admin,,1704949870
