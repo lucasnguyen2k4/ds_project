@@ -10,7 +10,7 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView
 # Function to create the interactive map
 def create_map():
     # Load the shapefile with geopandas
-    gdf = gpd.read_file('vn_shp/vn.shp', encoding = 'utf-8')
+    gdf = gpd.read_file('ds_project/vnmap/vn_shp/vn.shp', encoding = 'utf-8')
 
     # Generate a unique color for each province using a color palette
     num_provinces = len(gdf)
