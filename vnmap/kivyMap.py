@@ -9,7 +9,7 @@ import webbrowser
 
 # Create an interactive Folium map with province details on hover
 def create_map():
-    gdf = gpd.read_file('vn_shp/vn.shp', encoding = 'utf-8')
+    gdf = gpd.read_file('ds_project/vnmap/vn_shp/vn.shp', encoding = 'utf-8')
     
     # Define tooltip fields (replace with actual fields from your shapefile)
     tooltip_fields = ["id", "name"]
