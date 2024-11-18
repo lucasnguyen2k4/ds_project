@@ -12,10 +12,10 @@ df = pd.read_csv("data/region/vietnam/cities.csv")
 weather_scraper = WeatherScraper()
 aqi_scraper = AQIScraper()
 
-# test run, for full scraping --> only keep 'df' argument
-weather_scraper.mass_scrape(df, "2024-10-27")
-aqi_scraper.mass_scrape(df, "2024-10-27")
+# scraping
+weather_scraper.mass_scrape(df)
+aqi_scraper.mass_scrape(df)
 
 # concanate multiple city files --> regional files
-regional_weather_build("vietnam")
-regional_aqi_build("vietnam")
+group_weather_data("vietnam")
+group_aqi_data("vietnam")

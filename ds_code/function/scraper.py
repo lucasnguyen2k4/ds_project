@@ -1,9 +1,9 @@
+import os
 import requests
 import json
 import pandas as pd
-import pytz
-from time import time
-from datetime import datetime, timezone
+from time import time, sleep
+from datetime import datetime
 
 class Scraper:
     def __init__(self):
@@ -17,7 +17,11 @@ class Scraper:
         response = requests.get(url)
         print(url)
         
-        if response.status_code == 200:
+        if response.status_code == 429:
+            print("API request limit exceeded, retry in 30 seconds")
+            sleep(30)
+            self.get_json(*args)
+        elif response.status_code == 200:
             print("Request OK")
             self.json = response.json()
             return True
@@ -29,7 +33,7 @@ class Scraper:
         pass
         
     def store(self, filename):
-        self.df.dropna(thresh=3, inplace=True)
+        #self.df.dropna(thresh=3, inplace=True)
         path = "data" + "\\" + self.folder + "\\" + filename
         self.df.to_csv(path, index=False)
         
@@ -61,18 +65,19 @@ class WeatherScraper(TimeSeriesScraper):
     def __init__(self):
         super().__init__()
         self.folder = "weather"
-        self.raw_url = "https://archive-api.open-meteo.com/v1/archive?latitude={}&longitude={}&start_date={}&end_date={}&hourly=temperature_2m,relative_humidity_2m,dew_point_2m,rain,snowfall,surface_pressure,cloud_cover,wind_speed_10m,wind_direction_10m"
+        self.raw_url = "https://archive-api.open-meteo.com/v1/archive?latitude={}&longitude={}&start_date={}&end_date={}&hourly=temperature_2m,relative_humidity_2m,dew_point_2m,precipitation,surface_pressure,cloud_cover,wind_speed_10m,wind_direction_10m&timezone=auto"
         
     def to_dataframe(self):
         self.df = pd.DataFrame(self.json['hourly'])
         
-    def mass_scrape(self, df, start="2020-11-28", end="now"):
+    def mass_scrape(self, df, start="2020-11-28", end="now", overwrite=True):
         if end == "now":
-            end = datetime.fromtimestamp(time(), tz=pytz.utc).strftime("%Y-%m-%d")
+            end = datetime.fromtimestamp(time()).strftime("%Y-%m-%d")
             
         for i in range(df.shape[0]):
             row = df.loc[i]
-            self.scrape_and_store(str(row["id"]) + ".csv", row["lat"], row["lng"], start, end)
+            if overwrite or not os.path.exists("data" + "\\" + self.folder + "\\" + str(row["id"]) + ".csv"):
+                self.scrape_and_store(str(row["id"]) + ".csv", row["lat"], row["lng"], start, end)
             
 
 class AQIScraper(TimeSeriesScraper):
@@ -82,25 +87,23 @@ class AQIScraper(TimeSeriesScraper):
         self.raw_url = "http://api.openweathermap.org/data/2.5/air_pollution/history?lat={}&lon={}&start={}&end={}&appid=b34c8120213e3f26c596cfb41b21cb86"
         
     def to_dataframe(self):
-        json = str({str(obj["dt"]): obj["components"] for obj in self.json["list"]}).replace('\'', '"')
+        json = str({datetime.fromtimestamp(obj["dt"]).strftime("%Y-%m-%dT%H:%M:%S"): obj["components"] | obj["main"] for obj in self.json["list"]}).replace('\'', '"')
         self.df = pd.read_json(json, orient="index").drop(["no", "nh3"], axis=1)
         self.df.index.name = "time"
         self.df.reset_index(inplace=True)
         
-    def mass_scrape(self, df, start="2020-11-28", end="now"):
-        start_stamp = int(datetime.strptime(start, "%Y-%m-%d").replace(tzinfo=timezone.utc).timestamp())
+    def mass_scrape(self, df, start="2020-11-28", end="now", overwrite=True):
+        start_stamp = int(datetime.strptime(start, "%Y-%m-%d").timestamp())
         if end == "now":
             end_stamp = int(time())
         else:
-            end_stamp = int(datetime.strptime(end, "%Y-%m-%d").replace(tzinfo=timezone.utc).timestamp())
+            end_stamp = int(datetime.strptime(end, "%Y-%m-%d").timestamp())
 
         for i in range(df.shape[0]):
             row = df.loc[i]
-            self.scrape_and_store(str(row["id"]) + ".csv", row["lat"], row["lng"], start_stamp, end_stamp)
+            if overwrite or not os.path.exists("data" + "\\" + self.folder + "\\" + str(row["id"]) + ".csv"):
+                self.scrape_and_store(str(row["id"]) + ".csv", row["lat"], row["lng"], start_stamp, end_stamp)
         
     
 if __name__ == "__main__":
-    #scraper = AQIScraper()
-    df = pd.read_csv("data/region/europe/cities.csv")
-    #scraper.mass_scrape(df, start="2024-10-26")
-    
+    pass
