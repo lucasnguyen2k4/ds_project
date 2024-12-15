@@ -1,10 +1,10 @@
 city,city_ascii,lat,lng,country,iso2,iso3,admin_name,capital,population,id
-Ho Chi Minh City,Ho Chi Minh City,10.7756,106.7019,Vietnam,VN,VNM,Hồ Chí Minh,admin,15136000.0,1704774326
+Ho Chi Minh City,Ho Chi Minh City,10.7756,106.7019,Vietnam,VN,VNM,TP.HCM,admin,15136000.0,1704774326
 Hanoi,Hanoi,21.0,105.85,Vietnam,VN,VNM,Hà Nội,primary,8246600.0,1704413791
 Haiphong,Haiphong,20.8651,106.6838,Vietnam,VN,VNM,Hải Phòng,admin,2103500.0,1704000623
 Cần Thơ,Can Tho,10.0333,105.7833,Vietnam,VN,VNM,Cần Thơ,admin,1237300.0,1704783472
 Biên Hòa,Bien Hoa,10.95,106.8167,Vietnam,VN,VNM,Đồng Nai,admin,1104000.0,1704863046
-Huế,Hue,16.4667,107.5792,Vietnam,VN,VNM,Thừa Thiên-Huế,admin,652572.0,1704016023
+Huế,Hue,16.4667,107.5792,Vietnam,VN,VNM,Thừa Thiên - Huế,admin,652572.0,1704016023
 Bắc Ninh,Bac Ninh,21.1833,106.05,Vietnam,VN,VNM,Bắc Ninh,admin,520000.0,1704025181
 Hải Dương,Hai Duong,20.9397,106.3306,Vietnam,VN,VNM,Hải Dương,admin,507469.0,1704909566
 Vinh,Vinh,18.6667,105.6667,Vietnam,VN,VNM,Nghệ An,admin,490000.0,1704960059
@@ -12,7 +12,7 @@ Vinh,Vinh,18.6667,105.6667,Vietnam,VN,VNM,Nghệ An,admin,490000.0,1704960059
 Thanh Hóa,Thanh Hoa,19.8075,105.7764,Vietnam,VN,VNM,Thanh Hóa,admin,393294.0,1704016079
 Nha Trang,Nha Trang,12.245,109.1917,Vietnam,VN,VNM,Khánh Hòa,admin,392279.0,1704497901
 Nam Định,Nam Dinh,20.42,106.1683,Vietnam,VN,VNM,Nam Định,admin,352108.0,1704906277
-Vũng Tàu,Vung Tau,10.3833,107.1167,Vietnam,VN,VNM,Bà Rịa-Vũng Tàu,admin,341552.0,1704581438
+Vũng Tàu,Vung Tau,10.3833,107.1167,Vietnam,VN,VNM,Bà Rịa - Vũng Tàu,admin,341552.0,1704581438
 Buôn Ma Thuột,Buon Ma Thuot,12.6667,108.05,Vietnam,VN,VNM,Đắk Lắk,admin,340000.0,1704542086
 Thái Nguyên,Thai Nguyen,21.6,105.85,Vietnam,VN,VNM,Thái Nguyên,admin,330000.0,1704613715
 Thủ Dầu Một,Thu Dau Mot,10.9667,106.65,Vietnam,VN,VNM,Bình Dương,admin,321607.0,1704890399
@@ -23,7 +23,7 @@ Việt Trì,Viet Tri,21.3,105.4333,Vietnam,VN,VNM,Phú Thọ,admin,277539.0,1704
 Mỹ Tho,My Tho,10.35,106.35,Vietnam,VN,VNM,Tiền Giang,admin,270700.0,1704000376
 Thái Bình,Thai Binh,20.4461,106.3422,Vietnam,VN,VNM,Thái Bình,admin,268167.0,1704716027
 Quảng Ngãi,Quang Ngai,15.1167,108.8,Vietnam,VN,VNM,Quảng Ngãi,admin,260252.0,1704029499
-Rạch Giá,Rach Gia,10.0167,105.0833,Vietnam,VN,VNM,Kiến Giang,admin,250660.0,1704872008
+Rạch Giá,Rach Gia,10.0167,105.0833,Vietnam,VN,VNM,Kiên Giang,admin,250660.0,1704872008
 Tuy Hòa,Tuy Hoa,13.0819,109.295,Vietnam,VN,VNM,Phú Yên,admin,242840.0,1704697424
 Sóc Trăng,Soc Trang,9.6028,105.9736,Vietnam,VN,VNM,Sóc Trăng,admin,221430.0,1704758756
 Tân An,Tan An,10.5333,106.4167,Vietnam,VN,VNM,Long An,admin,215250.0,1704199290

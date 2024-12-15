@@ -3,6 +3,7 @@ import geopandas as gpd
 import folium
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QVBoxLayout, QWidget,
     QCalendarWidget, QLabel, QHBoxLayout, QPushButton, QSpinBox, QMessageBox, QComboBox
@@ -104,17 +105,42 @@ class MapApp(QMainWindow):
         self.setGeometry(100, 100, 1200, 700)
 
         # Cache data for reuse
-        self.gdf = gpd.read_file('vn_shp/vn.shp', encoding='utf-8')
-        num_provinces = len(self.gdf)
+        map_df = gpd.read_file("vnmap/vn_shp/vn.shp", encoding='utf-8').drop("id", axis=1)
+        city_df = pd.read_csv("data/region/vietnam/cities.csv").loc[:, ["admin_name", "id"]]
+        self.base_df = map_df.merge(city_df, left_on="name", right_on="admin_name")
+        self.weather_db = {i: pd.read_csv("forecast/weather/" + str(i) + ".csv").set_index("time") for i in self.base_df["id"]}
+        #well add historical...
+        #self.aqi...
+        
+        self.attr_range = {"temperature_2m": (0, 40),
+                           "relative_humidity_2m": (0, 100),
+                           "dew_point_2m": (0, 30),
+                           "precipitation": (0, 10), 
+                           "surface_pressure": (900, 1050),
+                           "cloud_cover": (0, 100),
+                           "wind_speed_10m": (0, 50)}
+        
+        color_func = lambda r, g, b: "#%02x%02x%02x" % (int(r * 255), int(g * 255), int(b * 255))
+        self.weather_cmap = [color_func(*plt.cm.jet(v)[:3]) for v in range(256)]
+        self.aqi_cmap = [color_func(*plt.cm.jet(v)[:3]) for v in range(100, 256)]
+        #self.color_point = lambda value, low, high, cmap: cmap[min(max((value - low) / (high - low), 0), 1) * (len(cmap) - 1)]
+        
+        num_provinces = len(self.base_df)
         color_palette = plt.cm.tab20(np.linspace(0, 1, num_provinces))
         colors = ["#%02x%02x%02x" % (int(r * 255), int(g * 255), int(b * 255)) for r, g, b, _ in color_palette]
-        self.gdf["color"] = colors
+        self.base_df["color"] = colors
 
         # Initialize state variables
         self.last_selected_date = None  # To track if the map needs refreshing
 
         # Initialize UI components
         self.init_ui()
+        
+        try:
+            self.set_dataframe()
+            self.update_map(force=True)  # Initial map render
+        except:
+            pass
 
     def init_ui(self):
         # Components
@@ -132,17 +158,26 @@ class MapApp(QMainWindow):
         self.hour_spinbox.setRange(0, 23)
         self.minute_spinbox = QSpinBox()
         self.minute_spinbox.setRange(0, 59)
+        current_time = QTime.currentTime()
+        self.hour_spinbox.setValue(current_time.hour())
+        self.minute_spinbox.setValue(current_time.minute())
 
         self.update_clock_button = QPushButton("Update Clock")
         self.update_clock_button.clicked.connect(self.update_clocks)
 
         self.browser = QWebEngineView()
-        self.update_map(force=True)  # Initial map render
 
         self.model_combobox1 = QComboBox()
-        self.model_combobox1.addItems(["Model A", "Model B", "Model C", "Model D"])
+        self.model_combobox1.addItems(["Random Forest", "VARMAX", "GRU"])
         self.model_combobox2 = QComboBox()
-        self.model_combobox2.addItems(["Historical", "Prediction"])
+        self.model_combobox2.addItems(["Weather", "AQI Predict"])
+        self.weather_attr = QComboBox()
+        self.weather_attr.addItems(["temperature_2m", "relative_humidity_2m", "dew_point_2m", "precipitation",
+                                    "surface_pressure", "cloud_cover", "wind_speed_10m"])
+        #self.weather_attr.hide()
+        self.aqi_attr = QComboBox()
+        self.aqi_attr.addItems(["co", "no2", "o3", "so2", "pm2_5", "pm10"])
+        #self.model_combobox2.hide()
         self.confirm_button = QPushButton("Confirm")
         self.confirm_button.clicked.connect(self.confirm_selection)
 
@@ -167,6 +202,8 @@ class MapApp(QMainWindow):
         left_layout.addWidget(self.model_combobox1)
         left_layout.addWidget(QLabel("Select Mode:"))
         left_layout.addWidget(self.model_combobox2)
+        left_layout.addWidget(self.weather_attr)
+        left_layout.addWidget(self.aqi_attr)
         left_layout.addWidget(self.confirm_button)
 
         main_layout = QHBoxLayout()
@@ -182,14 +219,17 @@ class MapApp(QMainWindow):
         self.setCentralWidget(central_widget)
 
         # Connect signals
-        self.calendar.selectionChanged.connect(self.handle_calendar_change)
+        #self.calendar.selectionChanged.connect(self.handle_calendar_change)
 
         # Timer to update digital clock every second
         #self.digital_timer = QTimer(self)
         #self.digital_timer.timeout.connect(self.update_digital_clock)
         #self.digital_timer.start(1000)
+        
+    def color_func(self, low, high, cmap):
+        return lambda value: cmap[round(min(max((value - low) / (high - low), 0), 1) * (len(cmap) - 1))]
 
-    def handle_calendar_change(self):
+    def handle_calendar_change(self):        # handle only when confirmed
         selected_date = self.calendar.selectedDate()
         if self.date_requires_update(selected_date):
             self.update_map()
@@ -198,11 +238,32 @@ class MapApp(QMainWindow):
     def date_requires_update(self, selected_date):
         # Check if the date has changed since the last update
         return self.last_selected_date != selected_date
+    
+    def get_selected_time(self):
+        date = self.calendar.selectedDate()
+        day, month, year = date.day(), date.month(), date.year()
+        hour = self.hour_spinbox.value()
+        return f"{year}-{month:02}-{day:02}T{hour:02}:00"
+        
+    def set_dataframe(self):
+        if self.model_combobox2.currentText() == "Weather":
+            self.show_df = self.base_df.loc[:]
+            self.attr = self.weather_attr.currentText()
+            selected_time = self.get_selected_time()
+            low, high = self.attr_range[self.attr]
+            self.show_df[self.attr] = [self.weather_db[i].loc[selected_time, self.attr] for i in self.base_df["id"]]
+            self.show_df["color"] = self.show_df[self.attr].apply(self.color_func(low, high, self.weather_cmap))
+        else:
+            pass
 
     def update_map(self, force=False):
         if force or self.date_requires_update(self.calendar.selectedDate()):
-            self.browser.setHtml(self.create_map())
-
+            try:
+                self.set_dataframe()
+                self.browser.setHtml(self.create_map())
+            except:
+                print("Chosen date is out of 7 days range from last data scrapping attempt.")
+    '''        
     def create_map(self):
         m = folium.Map(
             location=[14.0583, 108.2772],
@@ -212,7 +273,7 @@ class MapApp(QMainWindow):
         )
 
         folium.GeoJson(
-            self.gdf,
+            self.base_df,
             name="Provinces",
             style_function=lambda feature: {
                 "fillColor": feature["properties"]["color"],
@@ -224,7 +285,30 @@ class MapApp(QMainWindow):
         ).add_to(m)
 
         return m._repr_html_()
+    '''
+    
+    def create_map(self):
+        m = folium.Map(
+            location=[14.0583, 108.2772],
+            zoom_start=6,
+            max_bounds=True,
+            bounds=[[8.179, 102.144], [23.393, 109.463]]
+        )
 
+        folium.GeoJson(
+            self.show_df,
+            name="Provinces",
+            style_function=lambda feature: {
+                "fillColor": feature["properties"]["color"],
+                "color": "black",
+                "weight": 0.5,
+                "fillOpacity": 0.7,
+            },
+            tooltip=folium.GeoJsonTooltip(fields=["name", self.attr], aliases=["Province:", self.attr]),
+        ).add_to(m)
+
+        return m._repr_html_()
+    
     def update_clocks(self):
         hours = self.hour_spinbox.value()
         minutes = self.minute_spinbox.value()
@@ -239,7 +323,9 @@ class MapApp(QMainWindow):
     def confirm_selection(self):
         selected_model = self.model_combobox1.currentText()
         selected_mode = self.model_combobox2.currentText()
-        QMessageBox.information(self, "Selection Confirmed", f"Model: {selected_model}\nMode: {selected_mode}")
+        self.set_dataframe()
+        self.update_map(force=True)
+        #QMessageBox.information(self, "Selection Confirmed", f"Model: {selected_model}\nMode: {selected_mode}")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
