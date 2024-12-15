@@ -108,7 +108,7 @@ class MapApp(QMainWindow):
         map_df = gpd.read_file("vnmap/vn_shp/vn.shp", encoding='utf-8').drop("id", axis=1)
         city_df = pd.read_csv("data/region/vietnam/cities.csv").loc[:, ["admin_name", "id"]]
         self.base_df = map_df.merge(city_df, left_on="name", right_on="admin_name")
-        self.weather_db = {i: pd.read_csv("forecast/weather/" + str(i) + ".csv").set_index("time") for i in self.base_df["id"]}
+        self.weather_db = {i: pd.read_csv("forecast/" + str(i) + ".csv").set_index("time") for i in self.base_df["id"]}
         #well add historical...
         #self.aqi...
         
