@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 
 def group_data(region_folder, src_folder, filename):
+    """Group files in a folder to a big file containing infomation of multiple location."""
     keys = []
     city_dfs = []
     
@@ -30,7 +31,12 @@ def read_group_data(path_from_region):
     return pd.read_csv(path, index_col=0, header=[0, 1])
 
 
-def sliding_window(weather_df, air_df, window_size=4, target_size="one"):           # target_size is either "one" or "same"
+def sliding_window(weather_df, air_df, window_size=4, target_size="same"):           # target_size is either "one" or "same"
+    """
+    Create windows for data preprocessing step, with n hours of weather data
+    and corresponding 1 hour of AQI data (target_size="one") or n hours of AQI
+    data (target_size="same").
+    """
     X = []
     y = []
     w_df = weather_df[:]
@@ -61,6 +67,10 @@ def sliding_window(weather_df, air_df, window_size=4, target_size="one"):       
     return np.array(X), np.array(y)
 
 def predict_window(weather_df, window_size=4):
+    """
+    Create windows for data preprocessing step of large scale prediction, 
+    using whole weather data table of a province.
+    """
     X = []
     valid = []
     w_df = weather_df[:]

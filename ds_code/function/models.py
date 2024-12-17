@@ -9,19 +9,23 @@ class CustomGRU(nn.Module):
         self.seq_len = seq_len
         self.label_scaler = label_scaler
         
+        # fully connected layers to generate initial hidden state for GRU layers
         self.init_nn = nn.Sequential(
             nn.LayerNorm(3),
             nn.Linear(3, 128),
             nn.ReLU(),
-            nn.Linear(128, 256),  # Generate initial hidden state
+            nn.Linear(128, 256),
             nn.ReLU()
         )
         
+        # GRU layers
         self.flatten = nn.Flatten(1, -1)
         self.normalize = nn.LayerNorm(input_size * seq_len)
         self.gru1 = nn.GRU(input_size, 256, batch_first=True)
         self.gru2 = nn.GRU(256, 128, batch_first=True)
         self.gru3 = nn.GRU(128, 64, batch_first=True)
+        
+        # Final fully connected layer
         self.linear = nn.Linear(64, output_size)
 
     def forward(self, inp, rescale=False):
@@ -33,6 +37,7 @@ class CustomGRU(nn.Module):
         X, _ = self.gru2(X)
         X, _ = self.gru3(X)
         X = self.linear(X)
+        # Rescale if needed with a standard scaler (for actual prediction)
         if rescale:
             X = self.label_scaler.inverse_transform(X)
         return X
@@ -48,6 +53,7 @@ class CustomGRU(nn.Module):
         return output[:, -1]
     
 class StandardScaler(torch.nn.Module):
+    """Scaler for normalizing and revert data to original."""
     def __init__(self):
         super(StandardScaler, self).__init__()
         self.mean = None

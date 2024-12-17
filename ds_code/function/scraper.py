@@ -113,6 +113,8 @@ class AQIScraper(TimeSeriesScraper):
         
     
 if __name__ == "__main__":
+    """
     df = pd.read_csv("data/region/vietnam/cities.csv")
     scraper = WeatherScraper()
     scraper.forecast_scrape(df)
+    """

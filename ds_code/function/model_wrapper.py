@@ -6,6 +6,7 @@ from utils import predict_window
 from models import *
 
 class ModelWrapper:
+    """Wrapper for convenient large scale prediction with models."""
     def __init__(self, model_dir, output_dir):
         self.model = self.load_model(model_dir)
         self.output_dir = output_dir
@@ -21,6 +22,7 @@ class ModelWrapper:
         pass
         
     def forecast(self, extra_dir):
+        """Method for predicting and storing the result for further visualization."""
         init_df = pd.read_csv(extra_dir).set_index("id")
         for i in init_df.index:
             time_idx, X = predict_window(self.get_dataframe(i))
@@ -58,8 +60,8 @@ class GRUPredictor(ModelWrapper):
     
     def get_dataframe(self, i):
         weather_df = pd.read_csv(f"{self.input_dir}/{i}.csv")
-        weather_df["wind_x_component"] = np.cos(weather_df["wind_direction_10m"])
-        weather_df["wind_y_component"] = np.sin(weather_df["wind_direction_10m"])
+        weather_df["wind_x_component"] = np.cos(weather_df["wind_direction_10m"] / (180 / np.pi))
+        weather_df["wind_y_component"] = np.sin(weather_df["wind_direction_10m"] / (180 / np.pi))
         weather_df.drop("wind_direction_10m", axis=1, inplace=True)
         return weather_df
     

@@ -115,6 +115,7 @@ class MapApp(QMainWindow):
         self.aqi_gru_db = {i: pd.read_csv("forecast/aqi/gru/" + str(i) + ".csv").set_index("time") for i in self.base_df["id"]}
         #self.aqi...
         
+        # range for colormap
         self.attr_range = {"temperature_2m": (0, 40),
                            "relative_humidity_2m": (0, 100),
                            "dew_point_2m": (0, 30),
@@ -129,17 +130,16 @@ class MapApp(QMainWindow):
                            "no2": (0, 200),
                            "co": (0, 15400)}
         
+        # create color map
         color_func = lambda r, g, b: "#%02x%02x%02x" % (int(r * 255), int(g * 255), int(b * 255))
         self.weather_cmap = [color_func(*plt.cm.jet(v)[:3]) for v in range(256)]
         self.aqi_cmap = [color_func(*plt.cm.jet(v)[:3]) for v in range(110, 256)]
-
-        # Initialize state variables
-        self.last_selected_date = None  # To track if the map needs refreshing
 
         # Initialize UI components
         self.init_ui()
 
     def init_ui(self):
+        """Initialize UI after opening the app."""
         # Components
         self.calendar = QCalendarWidget()
         self.calendar.setFixedSize(600, 250)
@@ -166,10 +166,8 @@ class MapApp(QMainWindow):
         self.weather_attr = QComboBox()
         self.weather_attr.addItems(["temperature_2m", "relative_humidity_2m", "dew_point_2m", "precipitation",
                                     "surface_pressure", "cloud_cover", "wind_speed_10m"])
-        #self.weather_attr.hide()
         self.aqi_attr = QComboBox()
         self.aqi_attr.addItems(["co", "no2", "o3", "so2", "pm2_5", "pm10"])
-        #self.model_combobox2.hide()
         self.confirm_button = QPushButton("Confirm")
         self.confirm_button.clicked.connect(self.update_map)
 
@@ -213,6 +211,7 @@ class MapApp(QMainWindow):
         self.setCentralWidget(central_widget)
         
     def handle_combobox(self):
+        """Control how comboboxes show and hide based on their values."""
         if self.model_combobox2.currentText() == "Weather":
             self.model_label.hide()
             self.model_combobox1.hide()
@@ -228,12 +227,14 @@ class MapApp(QMainWindow):
         return lambda value: cmap[round(min(max((value - low) / (high - low), 0), 1) * (len(cmap) - 1))]
     
     def get_selected_time(self):
+        """Get time from hour spinbox and calendar, then make a Datetime string."""
         date = self.calendar.selectedDate()
         day, month, year = date.day(), date.month(), date.year()
         hour = self.hour_spinbox.value()
         return f"{year}-{month:02}-{day:02}T{hour:02}:00"
         
     def set_dataframe(self):
+        """Create dataframe for visualization."""
         self.show_df = self.base_df.loc[:]
         selected_time = self.get_selected_time()
         
@@ -254,6 +255,7 @@ class MapApp(QMainWindow):
         self.show_df["color"] = self.show_df[self.attr].apply(self.color_func(self.low, self.high, self.cmap))
 
     def update_map(self):
+        """Update map when the "Confirm" button is clicked."""
         try:
             self.set_dataframe()
             self.browser.setHtml(self.create_map())
@@ -264,6 +266,7 @@ class MapApp(QMainWindow):
             message_box.exec()
     
     def create_map(self):
+        """Draw map to visualize the dataframe after change."""
         m = folium.Map(
             location=[14.0583, 108.2772],
             zoom_start=6,

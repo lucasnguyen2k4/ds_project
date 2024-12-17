@@ -1,3 +1,4 @@
+# generate "extra_info.csv" file in data folder
 import pandas as pd
 
 city_df = pd.read_csv("data/region/vietnam/cities.csv")
