@@ -34,7 +34,7 @@ class Scraper:
         
     def store(self, filename):
         #self.df.dropna(thresh=3, inplace=True)
-        path = "data" + "\\" + self.folder + "\\" + filename
+        path = self.folder + "\\" + filename
         self.df.to_csv(path, index=False)
         
     def scrape_and_store(self, filename, *args):
@@ -52,7 +52,7 @@ class CountryScraper(Scraper):
     def __init__(self):
         super().__init__()
         self.raw_url = "http://api.geonames.org/countryInfoJSON?username=LucasLocker222"
-        self.folder = "countries"
+        self.folder = "data/countries"
         
     def to_dataframe(self):
         path = "data" + "\\" + self.folder + "\\" + 'countries.json'
@@ -64,7 +64,7 @@ class CountryScraper(Scraper):
 class WeatherScraper(TimeSeriesScraper):
     def __init__(self):
         super().__init__()
-        self.folder = "weather"
+        self.folder = "data/weather"
         self.raw_url = "https://archive-api.open-meteo.com/v1/archive?latitude={}&longitude={}&start_date={}&end_date={}&hourly=temperature_2m,relative_humidity_2m,dew_point_2m,precipitation,surface_pressure,cloud_cover,wind_speed_10m,wind_direction_10m&timezone=auto"
         
     def to_dataframe(self):
@@ -78,12 +78,19 @@ class WeatherScraper(TimeSeriesScraper):
             row = df.loc[i]
             if overwrite or not os.path.exists("data" + "\\" + self.folder + "\\" + str(row["id"]) + ".csv"):
                 self.scrape_and_store(str(row["id"]) + ".csv", row["lat"], row["lng"], start, end)
-            
+                
+    def forecast_scrape(self, df):
+        self.folder = "forecast/weather"
+        self.raw_url = "https://api.open-meteo.com/v1/forecast?latitude={}&longitude={}&hourly=temperature_2m,relative_humidity_2m,dew_point_2m,precipitation,surface_pressure,cloud_cover,wind_speed_10m,wind_direction_10m&timezone=auto&past_days=1"
+        
+        for i in range(df.shape[0]):
+            row = df.loc[i]
+            self.scrape_and_store(str(row["id"]) + ".csv", row["lat"], row["lng"])    
 
 class AQIScraper(TimeSeriesScraper):
     def __init__(self):
         super().__init__()
-        self.folder = "air_quality"
+        self.folder = "data/air_quality"
         self.raw_url = "http://api.openweathermap.org/data/2.5/air_pollution/history?lat={}&lon={}&start={}&end={}&appid=b34c8120213e3f26c596cfb41b21cb86"
         
     def to_dataframe(self):
@@ -106,4 +113,6 @@ class AQIScraper(TimeSeriesScraper):
         
     
 if __name__ == "__main__":
-    pass
+    df = pd.read_csv("data/region/vietnam/cities.csv")
+    scraper = WeatherScraper()
+    scraper.forecast_scrape(df)

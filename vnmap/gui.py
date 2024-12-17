@@ -4,7 +4,6 @@ import folium
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import branca.colormap as cm
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QVBoxLayout, QWidget, QMessageBox,
     QCalendarWidget, QLabel, QHBoxLayout, QPushButton, QSpinBox, QComboBox
@@ -106,8 +105,8 @@ class MapApp(QMainWindow):
         self.setGeometry(100, 100, 1200, 700)
 
         # Cache data for reuse
-        map_df = gpd.read_file("vn_shp/vn.shp", encoding='utf-8').drop("id", axis=1)
-        city_df = pd.read_csv("cities.csv").loc[:, ["admin_name", "id"]]
+        map_df = gpd.read_file("vnmap/vn_shp/vn.shp", encoding='utf-8').drop("id", axis=1)
+        city_df = pd.read_csv("data/region/vietnam/cities.csv").loc[:, ["admin_name", "id"]]
         self.base_df = map_df.merge(city_df, left_on="name", right_on="admin_name")
         
         self.weather_db = {i: pd.read_csv("forecast/weather/" + str(i) + ".csv").set_index("time") for i in self.base_df["id"]}
@@ -239,19 +238,19 @@ class MapApp(QMainWindow):
         
         if self.model_combobox2.currentText() == "Weather":
             self.attr = self.weather_attr.currentText()
-            self.cmap = self.weather_cmap
+            cmap = self.weather_cmap
             db = self.weather_db
         else:
             self.attr = self.aqi_attr.currentText()
-            self.cmap = self.aqi_cmap
+            cmap = self.aqi_cmap
             if self.model_combobox1.currentText() == "Random Forest":
                 db = self.aqi_forest_db
             elif self.model_combobox1.currentText() == "GRU":
                 db = self.aqi_gru_db
                 
-        self.low, self.high = self.attr_range[self.attr]
+        low, high = self.attr_range[self.attr]
         self.show_df[self.attr] = [db[i].loc[selected_time, self.attr] for i in self.base_df["id"]]
-        self.show_df["color"] = self.show_df[self.attr].apply(self.color_func(self.low, self.high, self.cmap))
+        self.show_df["color"] = self.show_df[self.attr].apply(self.color_func(low, high, cmap))
 
     def update_map(self):
         try:
@@ -262,6 +261,7 @@ class MapApp(QMainWindow):
             message_box.setWindowTitle("Warning")
             message_box.setText("Chosen date is out of 7-day range from last data scrapping attempt.")
             message_box.exec()
+    
     def create_map(self):
         m = folium.Map(
             location=[14.0583, 108.2772],
@@ -269,9 +269,6 @@ class MapApp(QMainWindow):
             max_bounds=True,
             bounds=[[8.179, 102.144], [23.393, 109.463]]
         )
-        
-        colormap = cm.LinearColormap(self.cmap, vmin=self.low, vmax=self.high)
-        m.add_child(colormap)
 
         folium.GeoJson(
             self.show_df,
