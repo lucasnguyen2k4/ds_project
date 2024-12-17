@@ -4,6 +4,7 @@ import folium
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import branca.colormap as cm
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QVBoxLayout, QWidget, QMessageBox,
     QCalendarWidget, QLabel, QHBoxLayout, QPushButton, QSpinBox, QComboBox
@@ -238,19 +239,19 @@ class MapApp(QMainWindow):
         
         if self.model_combobox2.currentText() == "Weather":
             self.attr = self.weather_attr.currentText()
-            cmap = self.weather_cmap
+            self.cmap = self.weather_cmap
             db = self.weather_db
         else:
             self.attr = self.aqi_attr.currentText()
-            cmap = self.aqi_cmap
+            self.cmap = self.aqi_cmap
             if self.model_combobox1.currentText() == "Random Forest":
                 db = self.aqi_forest_db
             elif self.model_combobox1.currentText() == "GRU":
                 db = self.aqi_gru_db
                 
-        low, high = self.attr_range[self.attr]
+        self.low, self.high = self.attr_range[self.attr]
         self.show_df[self.attr] = [db[i].loc[selected_time, self.attr] for i in self.base_df["id"]]
-        self.show_df["color"] = self.show_df[self.attr].apply(self.color_func(low, high, cmap))
+        self.show_df["color"] = self.show_df[self.attr].apply(self.color_func(self.low, self.high, self.cmap))
 
     def update_map(self):
         try:
@@ -269,6 +270,8 @@ class MapApp(QMainWindow):
             max_bounds=True,
             bounds=[[8.179, 102.144], [23.393, 109.463]]
         )
+        
+        m.add_child(cm.LinearColormap(self.cmap, vmin=self.low, vmax=self.high))
 
         folium.GeoJson(
             self.show_df,
