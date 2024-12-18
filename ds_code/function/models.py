@@ -1,4 +1,6 @@
 from torch import nn, Tensor
+from torch.utils.data import Dataset, DataLoader
+from sklearn import preprocessing
 import torch
 
 class CustomGRU(nn.Module):
@@ -289,3 +291,55 @@ class ConvLSTMTimeSeries(nn.Module):
         if numpy_output:
             output = output.numpy()
         return output
+    
+class TimeSeries3DDataset(Dataset):
+    def __init__(self, target, features, n_provinces, sequence_length=3, custom_scaler=None, predict=False):
+        if custom_scaler:
+            self.features_scaler, self.target_scaler = custom_scaler
+        else:
+            self.target_scaler = preprocessing.StandardScaler()
+            self.target_scaler.fit(target.values)
+            self.features_scaler = preprocessing.StandardScaler()
+            self.features_scaler.fit(features.values)
+
+        self.features = self.features_scaler.transform(features.values)
+
+        self.X = torch.tensor(self.features.reshape(n_provinces, len(features)//n_provinces, len(features.columns))).float()
+        self.predict = predict
+        if self.predict:
+            self.y = None
+        else:
+            self.target = self.target_scaler.transform(target.values)
+            self.y = torch.tensor(self.target.reshape(n_provinces, len(target)//n_provinces, len(target.columns))).float()
+            self.target_length = self.target.shape[-1]
+
+        self.sequence_length = sequence_length
+        self.features_length = self.features.shape[-1]
+    
+
+
+
+    def __len__(self):
+        return self.X.shape[1]
+
+    def _mirror_padding(self, x, sequence_length, padding_needed):
+        mirrored_part = torch.flip(x[:, :padding_needed, :], dims=[1])
+        padded_x = torch.cat([mirrored_part, x], dim=1)
+        return padded_x
+
+    def _get_window(self, X, i):
+        if i >= self.sequence_length - 1:
+            i_start = i - self.sequence_length + 1
+            x = X[:, i_start:(i + 1), :]
+        else:
+            padding_needed = self.sequence_length - i - 1
+            x = self._mirror_padding(X, self.sequence_length, padding_needed)
+            x = x[:, :self.sequence_length, :]
+        return x
+
+    def __getitem__(self, i):
+        x_window = self._get_window(self.X, i)
+        x_window = x_window.permute(1, 0, 2).unsqueeze(2)
+        if self.predict: 
+            return x_window
+        return x_window, self.y[:, i, :].flatten()

@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-def group_data(region_folder, src_folder, filename):
+def group_data(region_folder, src_folder, filename, to_csv=True, src='data'):
     """Group files in a folder to a big file containing infomation of multiple location."""
     keys = []
     city_dfs = []
@@ -11,11 +11,14 @@ def group_data(region_folder, src_folder, filename):
         row = df.loc[i]
         key = row["city"] + ', ' + row["country"]
         keys.append(key)
-        city_df = pd.read_csv("data/" + src_folder + "/" + str(row["id"]) + ".csv").set_index("time")
+        city_df = pd.read_csv(src + '/' + src_folder + "/" + str(row["id"]) + ".csv").set_index("time")
         city_dfs.append(city_df)
         
     region_df = pd.concat(city_dfs, axis=1, keys=keys)
-    region_df.to_csv("data/region/" + region_folder + "/" + filename)
+    if to_csv:
+        region_df.to_csv("data/region/" + region_folder + "/" + filename)
+    else:
+        return region_df
     
     
 def group_weather_data(region_folder, filename="weather.csv"):

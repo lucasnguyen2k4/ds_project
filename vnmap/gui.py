@@ -113,7 +113,7 @@ class MapApp(QMainWindow):
         self.weather_db = {i: pd.read_csv("forecast/weather/" + str(i) + ".csv").set_index("time") for i in self.base_df["id"]}
         self.aqi_forest_db = {i: pd.read_csv("forecast/aqi/random_forest/" + str(i) + ".csv").set_index("time") for i in self.base_df["id"]}
         self.aqi_gru_db = {i: pd.read_csv("forecast/aqi/gru/" + str(i) + ".csv").set_index("time") for i in self.base_df["id"]}
-        #self.aqi...
+        self.aqi_convlstm_db = {i: pd.read_csv("forecast/aqi/conv_lstm/" + str(i) + ".csv").set_index("time") for i in self.base_df["id"]}
         
         # range for colormap
         self.attr_range = {"temperature_2m": (0, 40),
@@ -159,7 +159,7 @@ class MapApp(QMainWindow):
         self.browser = QWebEngineView()
 
         self.model_combobox1 = QComboBox()
-        self.model_combobox1.addItems(["Random Forest", "VARMAX", "GRU"])
+        self.model_combobox1.addItems(["Random Forest", "ConvLSTM", "GRU"])
         self.model_combobox2 = QComboBox()
         self.model_combobox2.addItems(["Weather", "AQI Predict"])
         self.model_combobox2.currentIndexChanged.connect(self.handle_combobox)
@@ -249,9 +249,11 @@ class MapApp(QMainWindow):
                 db = self.aqi_forest_db
             elif self.model_combobox1.currentText() == "GRU":
                 db = self.aqi_gru_db
+            else:
+                db = self.aqi_convlstm_db
                 
         self.low, self.high = self.attr_range[self.attr]
-        self.show_df[self.attr] = [db[i].loc[selected_time, self.attr] for i in self.base_df["id"]]
+        self.show_df[self.attr] = [max(db[i].loc[selected_time, self.attr], 0) for i in self.base_df["id"]]
         self.show_df["color"] = self.show_df[self.attr].apply(self.color_func(self.low, self.high, self.cmap))
 
     def update_map(self):
